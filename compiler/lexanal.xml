@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type='text/xsl' href='xsl/lexanal.xsl'?>
+<lexanal>
+<terminal token="PROGRAM" line="1" column="1"/>
+<terminal token="declarations_var" lexeme="HelloWorld" line="1" column="9"/>
+<terminal token="expr_value" line="1" column="19"/>
+<terminal token="VAR" line="3" column="1"/>
+<terminal token="declarations_var" lexeme="i" line="4" column="5"/>
+<terminal token="decl_type" line="4" column="6"/>
+<terminal token="decl_var" line="4" column="7"/>
+<terminal token="expr_value" line="4" column="14"/>
+<terminal token="declarations_var" lexeme="a" line="5" column="5"/>
+<terminal token="decl_type" line="5" column="6"/>
+<terminal token="decl_const" line="5" column="7"/>
+<terminal token="expr_value" line="5" column="11"/>
+<terminal token="declarations_var" lexeme="b" line="6" column="5"/>
+<terminal token="decl_type" line="6" column="6"/>
+<terminal token="ARRAY" line="6" column="7"/>
+<terminal token="decl_func" line="6" column="12"/>
+<terminal token="declarations_subprg" lexeme="1" line="6" column="13"/>
+<terminal token="decl_procedure" line="6" column="14"/>
+<terminal token="declarations_subprg" lexeme="10" line="6" column="16"/>
+<terminal token="composed_stmt" line="6" column="18"/>
+<terminal token="OF" line="6" column="20"/>
+<terminal token="decl_var" line="6" column="23"/>
+<terminal token="expr_value" line="6" column="30"/>
+<terminal token="BEGIN" line="8" column="1"/>
+<terminal token="declarations_var" lexeme="i" line="9" column="5"/>
+<terminal token="ASSIGN" line="9" column="7"/>
+<terminal token="declarations_var" lexeme="a" line="9" column="10"/>
+<terminal token="expr_type" line="9" column="11"/>
+<terminal token="declarations_subprg" lexeme="2" line="9" column="12"/>
+<terminal token="expr_value" line="9" column="13"/>
+<terminal token="declarations_var" lexeme="b" line="10" column="5"/>
+<terminal token="decl_func" line="10" column="6"/>
+<terminal token="declarations_var" lexeme="i" line="10" column="7"/>
+<terminal token="composed_stmt" line="10" column="8"/>
+<terminal token="ASSIGN" line="10" column="9"/>
+<terminal token="declarations_subprg" lexeme="3" line="10" column="11"/>
+<terminal token="expr_value" line="10" column="12"/>
+<terminal token="declarations_var" lexeme="a" line="11" column="5"/>
+<terminal token="ASSIGN" line="11" column="7"/>
+<terminal token="declarations" lexeme="&#39;a&#39;" line="11" column="10"/>
+<terminal token="expr_value" line="11" column="13"/>
+<terminal token="WHILE" line="12" column="5"/>
+<terminal token="declarations_var" lexeme="i" line="12" column="11"/>
+<terminal token="GTH" line="12" column="13"/>
+<terminal token="declarations_subprg" lexeme="3" line="12" column="15"/>
+<terminal token="DO" line="12" column="17"/>
+<terminal token="BEGIN" line="13" column="5"/>
+<terminal token="IF" line="14" column="6"/>
+<terminal token="declarations_var" lexeme="i" line="14" column="9"/>
+<terminal token="GTH" line="14" column="11"/>
+<terminal token="declarations_subprg" lexeme="1" line="14" column="13"/>
+<terminal token="THEN" line="14" column="15"/>
+<terminal token="declarations_var" lexeme="i" line="15" column="7"/>
+<terminal token="ASSIGN" line="15" column="9"/>
+<terminal token="declarations_var" lexeme="i" line="15" column="12"/>
+<terminal token="expr_type" line="15" column="14"/>
+<terminal token="declarations_subprg" lexeme="1" line="15" column="16"/>
+<terminal token="END" line="16" column="5"/>
+<terminal token="END" line="17" column="1"/>
+<terminal token="list_param" line="17" column="4"/>
+</lexanal>

@@ -1,0 +1,639 @@
+package mini.pascal.compiler;
+
+import java_cup.runtime.*;
+import java.io.FileReader;
+import mini.pascal.ast.*;
+import java.util.ArrayList;
+
+parser code {:
+
+	public PascalProgram root = null;
+
+	public SymTable symtable = new SymTable();
+
+	public ArrayList<IntermReg> intermcode = new ArrayList<IntermReg>();
+
+	public void report_error(String message, Object info) {
+		StringBuilder m = new StringBuilder("Sintax Error");
+		if (info instanceof java_cup.runtime.Symbol) {
+			java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+			if (s.left >= 0) {
+				m.append(" at line "+(s.left+1));
+				if (s.right >= 0)
+					m.append(", column "+(s.right+1));
+			}
+		}
+		m.append(" : " + message);
+		System.err.println(m);
+	}
+
+	public void report_fatal_error(String message, Object info) {
+		report_error(message, info);
+		//System.exit(1);
+	}
+
+	public void syntax_error(Symbol cur_token) {
+		report_error("on Token "+ cur_token.value, cur_token);
+	}
+
+	public static void main(String[] args){
+		try {
+			Parser asin = new Parser(
+				new Lexer( new FileReader(args[0])));
+			Object result = asin.parse().value;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	:};
+
+	terminal  PROGRAM, BEGIN, END, ARRAY, DIV, DO, ELSE,
+	IF, NOT, OF, OR, THEN, VAR, WHILE, REPEAT, UNTIL, FOR, TO,
+	LEFT_PAR, RIGHT_PAR, LEFT_BRACKET, RIGHT_BRACKET, IN,
+	SEMICOLON, COLON, COMMA, DOT, ASIGN, PLUS, MINUS,
+	DIVIDE, PRODUCT, MOD, EQUALS, NOT_EQUAL,
+	GREATER_THAN, LESS_THAN, GREATER_EQUALS, LESS_EQUAL,
+	INTEGER, ID, STRING, CHAR, WRITE_LN, READ_LN,
+	BOOLEAN, INT_CONST, TRUE, FALSE, CHAR_CONS, PROCEDURE, FUNCTION;
+
+	terminal String STRING_LITERAL;
+
+	non terminal PascalProgram pascalProgram;
+	non terminal Block block;
+	non terminal Object variableDeclarationPart;
+	non terminal VariableDeclarationList variableDeclarationList;
+	non terminal VariableDeclaration variableDeclaration;
+	non terminal IdentifierList identifierList;
+	non terminal Type type;
+	non terminal ArrayType arrayType;
+	non terminal IndexRange indexRange;
+	non terminal SimpleType simpleType;
+	non terminal Statements statements;
+	non terminal Statement statement;
+	non terminal Variable variable;
+	non terminal String operational;
+	non terminal Expression expression;
+	non terminal SimpleExpression simpleExpression;
+	non terminal Term term;
+	non terminal Factor factor;
+	non terminal String termOps;
+	non terminal Blocks blocks;
+	non terminal FunctionDeclaration functionDeclaration;
+	non terminal ProcedureDeclaration procedureDeclaration;
+	non terminal Params params;
+	non terminal Param param;
+	non terminal Expressions expressions;
+
+
+	precedence left OR ;
+	precedence nonassoc EQUALS, NOT_EQUAL, LESS_THAN, GREATER_THAN, LESS_EQUAL, GREATER_EQUALS ;
+	precedence left PLUS, MINUS ;
+	precedence left PRODUCT, DIVIDE ;
+	precedence nonassoc NOT ;
+	precedence left DOT, LEFT_BRACKET, RIGHT_BRACKET, LEFT_PAR, RIGHT_PAR ;
+	precedence right ELSE;
+	precedence left ID;
+
+
+	start with pascalProgram;
+
+	// program id;
+	// [Block]
+	// .
+
+	pascalProgram ::= PROGRAM ID:id SEMICOLON blocks:blocks DOT {:
+			PascalProgram r = new PascalProgram((String) id, blocks);
+			RESULT = r;
+			parser.root = RESULT;
+			System.out.println(parser.symtable.toString());
+		:}
+	;
+
+	// [variableDeclarationPart]
+	// [statementPart]
+
+	blocks::= block:b blocks:bs {:
+			Blocks r = new Blocks(bs, b);
+			RESULT = r;
+		:}
+	|
+		block:b {:
+			Blocks r = new Blocks(b);
+			RESULT = r;
+		:}
+	;
+
+	block::= variableDeclarationPart:vdl {:
+			RESULT = (VariableDeclarationList) vdl;
+		:}
+	|
+		functionDeclaration:fd SEMICOLON {:
+			RESULT = (FunctionDeclaration) fd;
+		:}
+	|
+		procedureDeclaration:pd SEMICOLON {:
+			RESULT = (ProcedureDeclaration) pd;
+		:}
+	|
+		BEGIN statements:s END {:
+			RESULT = (Statements) s;
+		:}
+	;
+
+	functionDeclaration::= FUNCTION ID:id LEFT_PAR params:p RIGHT_PAR COLON type:t SEMICOLON blocks:b {:
+			FunctionDeclaration r = new FunctionDeclaration((String) id, p, t, b);
+			RESULT = r;
+		:}
+	;
+
+	procedureDeclaration::= PROCEDURE ID:id LEFT_PAR params:p RIGHT_PAR SEMICOLON blocks:b {:
+			ProcedureDeclaration r = new ProcedureDeclaration((String) id, p, b);
+			RESULT = r;
+		:}
+	;
+
+	params::= params:ps SEMICOLON param:p{:
+			Params r = new Params(ps, p);
+			RESULT = r;
+		:}
+	|
+		param:p {:
+			Params r = new Params(p);
+			RESULT = r;
+		:}
+	;
+
+	param::= identifierList:i COLON type:t {:
+			Param r = new Param(i, t, false);
+			RESULT = r;
+		:}
+	|
+		VAR identifierList:i COLON type:t {:
+			Param r = new Param(i, t, true);
+			RESULT = r;
+		:}
+	;
+
+
+	// VAR
+	//	  [variableDeclarationList]
+
+	variableDeclarationPart::= VAR variableDeclarationList:vdl {:
+			RESULT = vdl;
+		:}
+	;
+
+	//    [str, str2, str3 : string;]
+	//    [char, char2, char3: char;]
+
+	variableDeclarationList::= variableDeclaration:vd SEMICOLON{:
+			VariableDeclarationList r = new VariableDeclarationList(vd);
+			RESULT = r;
+		:}
+	|
+		variableDeclarationList:vdl variableDeclaration:vd SEMICOLON{:
+			vdl.add_declaration(vd);
+			RESULT = vdl;
+		:}
+	;
+
+	// variableDeclaration
+	//    [num, num2, num3] : [integer];
+	//    [identifierList] : [type];
+
+
+	variableDeclaration::= identifierList:il COLON type:t {:
+			VariableDeclaration r = new VariableDeclaration(il, t);
+			for (int i = 0; i < il.ids.size(); i++) {
+				parser.symtable.enter(il.ids.get(i), t.getType().toString());
+			}
+			RESULT = r;
+		:}
+	|
+		error SEMICOLON {:
+			System.err.println("Error at declaration line: Posible missing ; at the end of a declaration line.");
+		:}
+	;
+
+
+	// [identifierList] : string
+	// char, char2, char3
+
+	identifierList::= ID:id {:
+			IdentifierList r = new IdentifierList();
+			r.add_id(id);
+			RESULT = r;
+		:}
+	|
+		identifierList:il COMMA ID:id {:
+			il.add_id(id);
+			RESULT = il;
+		:}
+	|
+		error {:
+			System.err.println("Error at declaration list: Posible missing , in the middle of a declaration list.");
+		:}
+	;
+
+
+	// Los tipos pueden ser:
+	//	str : string; (sympleType)
+	// o
+	//	myArray, myArray2 : Array[1..5] of Integer; (arrayType)
+
+	type::= simpleType:st {:
+			Type r = new Type(st);
+			RESULT = r;
+		:}
+	|
+		arrayType:at {:
+			Type r = new Type(at);
+			RESULT = r;
+		:}
+	;
+
+
+	// myArray : Array[1..5] of Integer;
+
+	arrayType::= ARRAY LEFT_BRACKET indexRange:ir RIGHT_BRACKET OF simpleType:st {:
+			ArrayType r = new ArrayType(ir.start, ir.end, st);
+			RESULT = r;
+		:}
+	;
+
+	// [1..5]
+
+	indexRange::= factor:start DOT DOT factor:end {:
+			IndexRange r = new IndexRange(start, end);
+			RESULT = r;
+		:}
+ 	;
+
+ 	// words: 'string', 'char', 'integer', 'boolean'
+
+	simpleType::= STRING {:
+			SimpleType r = new SimpleType("string");
+			RESULT = r;
+		:}
+	|
+		CHAR:st {:
+			SimpleType r = new SimpleType("char");
+			RESULT = r;
+		:}
+	|
+		INTEGER:st {:
+			SimpleType r = new SimpleType("integer");
+			RESULT = r;
+		:}
+	|
+		BOOLEAN:st {:
+			SimpleType r = new SimpleType("boolean");
+			RESULT = r;
+		:}
+	;
+
+	// para la repetición de statements
+
+	statements::= statement:s {:
+			Statements r = new Statements(s);
+			RESULT = r;
+		:}
+	|
+		statements:ss SEMICOLON statement:s {:
+			Statements r = new Statements(s, ss);
+			RESULT = r;
+		:}
+	;
+
+
+	// contiene:
+	// if e then s
+	// if e then s else s
+	// while e do s
+	// repeate e until s
+	// for id := e to e do s
+	// v := e
+	// begin ss end
+
+	statement::= IF expression:e THEN statement:s {:
+			IfStatement r = new IfStatement(e, s);
+			RESULT = r;
+		:}
+	|
+		IF expression:e THEN statement:s1 ELSE statement:s2 {:
+			IfStatement r = new IfStatement(e, s1, s2);
+			RESULT = r;
+		:}
+	|
+		WHILE expression:e DO statement:s {:
+			WhileStatement r = new WhileStatement(e, s);
+			RESULT = r;
+		:}
+	|
+		REPEAT statement:s UNTIL expression:e {:
+			RepeatStatement r = new RepeatStatement(e, s);
+			RESULT = r;
+		:}
+	|
+		FOR ID:id ASIGN expression:e1 TO expression:e2 DO statement:s {:
+			ForStatement r = new ForStatement(id, e1, e2, s);
+			RESULT = r;
+		:}
+	|
+		variable:v ASIGN expression:e {:
+			AssignmentStatement r = new AssignmentStatement(v, e);
+			if (v.type != e.type) {
+				StringBuilder m = new StringBuilder("Error: Operating differents types. ("+v.type+"=/="+ e.type+")");
+				if (vleft >= 0) {
+					m.append(" at line "+(vleft+1));
+				if (vright >= 0)
+					m.append(", column "+(vright+1));
+				}
+				System.err.println(m);
+			} else {
+				r.type = v.type;
+			}
+			RESULT = r;
+		:}
+	|
+		BEGIN statements:s END {:
+			BEStatement r = new BEStatement(s);
+			RESULT = r;
+		:}
+	|
+		// Llamado a procedimiento
+		ID:id LEFT_PAR expressions:e RIGHT_PAR {:
+			// TODO Validar si id esta en la tabla de simbolos de procedimientos
+			ProcedureCall r = new ProcedureCall((String) id, e);
+			RESULT = r;
+		:}
+	;
+
+	// agarra el id de una variable normal o el de un arreglo
+	// id
+	// id[pos]
+	// pos puede ser una expresion tipo 4+3
+
+	variable::= ID:id LEFT_BRACKET expressions:e RIGHT_BRACKET {:
+			Variable r = new Variable(id, e);
+			String var_type = parser.symtable.lookup((String) id);
+			if (var_type == null) {
+				StringBuilder m = new StringBuilder("Error: Variable '"+ (String) id +"' was not defined.");
+				if (idleft >= 0) {
+					m.append(" at line "+(idleft+1));
+				if (idright >= 0)
+					m.append(", column "+(idright+1));
+				}
+				System.err.println(m);
+			}
+			r.type = var_type;
+			RESULT = r;
+		:}
+	|
+		ID:id {:
+			Variable r = new Variable(id);
+			String var_type = parser.symtable.lookup((String) id);
+			if (var_type == null) {
+				StringBuilder m = new StringBuilder("Error: Variable '"+ (String) id +"' was not defined.");
+				if (idleft >= 0) {
+					m.append(" at line "+(idleft+1));
+				if (idright >= 0)
+					m.append(", column "+(idright+1));
+				}
+				System.err.println(m);
+			}
+			r.type = var_type;
+			RESULT = r;
+		:}
+	;
+
+
+
+	operational::= PRODUCT {:
+			RESULT = "*";
+		:}
+	|
+		DIVIDE {:
+			RESULT = "/";
+		:}
+	|
+		GREATER_THAN {:
+			RESULT = ">";
+		:}
+	|
+		LESS_THAN {:
+			RESULT = "<";
+		:}
+	|
+		GREATER_EQUALS {:
+			RESULT = ">=";
+		:}
+	|
+		LESS_EQUAL {:
+			RESULT = ">=";
+		:}
+	|
+		EQUALS EQUALS {:
+			RESULT = "==";
+		:}
+	|
+		NOT_EQUAL {:
+			RESULT = "<>";
+		:}
+	|
+		IN {:
+			RESULT = "IN";
+		:}
+	|
+		{:
+			RESULT = null;
+		:}
+	;
+
+
+	expressions::= expressions:es COMMA expression:e {:
+			Expressions r = new Expressions(es, e);
+			RESULT = r;
+		:}
+	|
+		expression:e {:
+			Expressions r = new Expressions(e);
+			RESULT = r;
+		:}
+	;
+
+	expression::= simpleExpression:se {:
+			Expression r = new Expression(se);
+			RESULT = r;
+		:}
+	|
+		simpleExpression:se1 operational:o simpleExpression:se2 {:
+			Expression r = new Expression(se1, se2, o);
+			if (se1.type != se2.type) {
+				StringBuilder m = new StringBuilder("Error: Operating differents types. ("+se1.type+"=/="+ se2.type+")");
+				if (se1left >= 0) {
+					m.append(" at line "+(se1left+1));
+				if (se1right >= 0)
+					m.append(", column "+(se1right+1));
+				}
+				System.err.println(m);
+			}
+			RESULT = r;
+		:}
+	;
+
+
+	simpleExpression::= PLUS term:t {:
+			SimpleExpression r = new SimpleExpression("+", t);
+			RESULT = r;
+		:}
+	|
+		MINUS term:t {:
+			SimpleExpression r = new SimpleExpression("+", t);
+			RESULT = r;
+		:}
+	|
+		term:t {:
+			SimpleExpression r = new SimpleExpression(t);
+			RESULT = r;
+		:}
+	|
+		simpleExpression:se PLUS term:t {:
+			SimpleExpression r = new SimpleExpression(se, "+", t);
+			if (se.type == t.type) {
+				r.type = se.type;
+			} else {
+				StringBuilder m = new StringBuilder("Error: Operating differents types. ("+se.type+"=/="+ t.type+")");
+				if (seleft >= 0) {
+					m.append(" at line "+(seleft+1));
+				if (seright >= 0)
+					m.append(", column "+(seright+1));
+				}
+				System.err.println(m);
+			}
+			RESULT = r;
+		:}
+	|
+		simpleExpression:se MINUS term:t {:
+			SimpleExpression r = new SimpleExpression(se, "-", t);
+			if (se.type == t.type) {
+				r.type = se.type;
+			} else {
+				StringBuilder m = new StringBuilder("Error: Operating differents types. ("+se.type+"=/="+ t.type+")");
+				if (seleft >= 0) {
+					m.append(" at line "+(seleft+1));
+				if (seright >= 0)
+					m.append(", column "+(seright+1));
+				}
+				System.err.println(m);
+			}
+			RESULT = r;
+		:}
+	|
+		simpleExpression:se OR term:t {:
+			SimpleExpression r = new SimpleExpression(se, "OR", t);
+			if (se.type == t.type) {
+				r.type = se.type;
+			} else {
+				StringBuilder m = new StringBuilder("Error: Operating differents types. ("+se.type+"=/="+ t.type+")");
+				if (seleft >= 0) {
+					m.append(" at line "+(seleft+1));
+				if (seright >= 0)
+					m.append(", column "+(seright+1));
+				}
+				System.err.println(m);
+			}
+			RESULT = r;
+		:}
+	;
+
+
+	term::= factor:f {:
+			Term r = new Term(f);
+			r.type = f.type;
+			RESULT = r;
+		:}
+	|
+		factor:f termOps:to term:t {:
+			Term r = new Term(f,to,t);
+			if (t.type == f.type) {
+				r.type = t.type;
+			} else {
+				StringBuilder m = new StringBuilder("Error: Operating differents types. ("+t.type+"=/="+ f.type+")");
+				if (fleft >= 0) {
+					m.append(" at line "+(fleft+1));
+				if (fright >= 0)
+					m.append(", column "+(fright+1));
+				}
+				System.err.println(m);
+			}
+			RESULT = r;
+		:}
+
+	;
+
+	termOps::= PRODUCT {:
+			RESULT = "*";
+		:}
+	|
+		DIVIDE {:
+			RESULT = "/";
+		:}
+	|
+		DIV {:
+			RESULT = "div";
+		:}
+	|
+		MOD {:
+			RESULT = "mod";
+		:}
+	;
+
+	factor::= //Llamado a funcion
+		variable:v LEFT_PAR expressions:e RIGHT_PAR {:
+			Factor r = new Factor(v, e);
+			RESULT = r;
+		:}
+	|
+		variable:v {:
+			Factor r = new Factor(v);
+			RESULT = r;
+		:}
+
+	|
+		LEFT_PAR expression:e RIGHT_PAR {:
+			Factor r = new Factor(e);
+			RESULT = r;
+		:}
+	|
+		NOT factor:f {:
+			Factor r = new Factor(f);
+			RESULT = r;
+		:}
+	|
+		INT_CONST:i {:
+			Factor r = new Factor((String) i, "integer");
+			RESULT = r;
+		:}
+	|
+		STRING_LITERAL:i {:
+			Factor r = new Factor((String) i, "string");
+			RESULT = r;
+		:}
+	|
+		CHAR_CONS:i {:
+			Factor r = new Factor((String) i.toString(), "char");
+			RESULT = r;
+		:}
+	|
+		TRUE:i {:
+			Factor r = new Factor((String) i, "boolean");
+			RESULT = r;
+		:}
+	|
+		FALSE:i {:
+			Factor r = new Factor((String) i, "boolean");
+			RESULT = r;
+		:}
+
+	;

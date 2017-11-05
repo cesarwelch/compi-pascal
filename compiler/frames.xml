@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type='text/xsl' href='xsl/frames.xsl'?>
+<frames>
+<absnode pos="(1:1-17:4)" kind="Program">
+<absnode pos="(1:9-1:18)" kind="DeclName" value="HelloWorld">
+</absnode>
+<absnode pos="(3:1-6:30)" kind="Decls">
+<absnode pos="(4:5-4:14)" kind="VarDecl">
+<seminfo kind="DECL" value="1950409828"/>
+<seminfo kind="SCOPE" value="0"/>
+<semtype kind="INT"/>
+<frmnode>
+<frm kind="label" value="_i"/>
+</frmnode>
+<absnode pos="(4:5-4:5)" kind="DeclName" value="i">
+</absnode>
+<absnode pos="(4:7-4:13)" kind="AtomType(INT)">
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(5:5-5:11)" kind="VarDecl">
+<seminfo kind="DECL" value="1229416514"/>
+<seminfo kind="SCOPE" value="0"/>
+<semtype kind="CHAR"/>
+<frmnode>
+<frm kind="label" value="_a"/>
+</frmnode>
+<absnode pos="(5:5-5:5)" kind="DeclName" value="a">
+</absnode>
+<absnode pos="(5:7-5:10)" kind="AtomType(CHAR)">
+<semtype kind="CHAR"/>
+</absnode>
+</absnode>
+<absnode pos="(6:5-6:30)" kind="VarDecl">
+<seminfo kind="DECL" value="2016447921"/>
+<seminfo kind="SCOPE" value="0"/>
+<semtype kind="ARRAY" value="(1,10)">
+<semtype kind="INT"/>
+</semtype>
+<frmnode>
+<frm kind="label" value="_b"/>
+</frmnode>
+<absnode pos="(6:5-6:5)" kind="DeclName" value="b">
+</absnode>
+<absnode pos="(6:7-6:29)" kind="ArrayType">
+<semtype kind="ARRAY" value="(1,10)">
+<semtype kind="INT"/>
+</semtype>
+<absnode pos="(6:13-6:13)" kind="AtomExpr(INT)" value="1">
+<seminfo kind="VALUE" value="1"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(6:16-6:17)" kind="AtomExpr(INT)" value="10">
+<seminfo kind="VALUE" value="10"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(6:23-6:29)" kind="AtomType(INT)">
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(8:1-17:3)" kind="BlockStmt">
+<absnode pos="(9:5-16:7)" kind="Stmts">
+<absnode pos="(9:5-9:12)" kind="AssignStmt">
+<absnode pos="(9:5-9:5)" kind="ValName" value="i">
+<seminfo kind="DECL" value="1950409828"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(9:10-9:12)" kind="BinExpr" value="ADD">
+<seminfo kind="VALUE" value="null"/>
+<absnode pos="(9:10-9:10)" kind="ValName" value="a">
+<seminfo kind="DECL" value="1229416514"/>
+<semtype kind="CHAR"/>
+</absnode>
+<absnode pos="(9:12-9:12)" kind="AtomExpr(INT)" value="2">
+<seminfo kind="VALUE" value="2"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(10:5-10:11)" kind="AssignStmt">
+<absnode pos="(10:5-10:8)" kind="BinExpr" value="ARRACCESS">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(10:5-10:5)" kind="ValName" value="b">
+<seminfo kind="DECL" value="2016447921"/>
+<semtype kind="ARRAY" value="(1,10)">
+<semtype kind="INT"/>
+</semtype>
+</absnode>
+<absnode pos="(10:7-10:7)" kind="ValName" value="i">
+<seminfo kind="DECL" value="1950409828"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(10:11-10:11)" kind="AtomExpr(INT)" value="3">
+<seminfo kind="VALUE" value="3"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(11:5-11:12)" kind="AssignStmt">
+<absnode pos="(11:5-11:5)" kind="ValName" value="a">
+<seminfo kind="DECL" value="1229416514"/>
+<semtype kind="CHAR"/>
+</absnode>
+<absnode pos="(11:10-11:12)" kind="AtomExpr(CHAR)" value="'a'">
+<seminfo kind="VALUE" value="97"/>
+<semtype kind="CHAR"/>
+</absnode>
+</absnode>
+<absnode pos="(12:5-16:7)" kind="WhileStmt">
+<absnode pos="(12:11-12:15)" kind="BinExpr" value="GTH">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+<absnode pos="(12:11-12:11)" kind="ValName" value="i">
+<seminfo kind="DECL" value="1950409828"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(12:15-12:15)" kind="AtomExpr(INT)" value="3">
+<seminfo kind="VALUE" value="3"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(13:5-16:7)" kind="BlockStmt">
+<absnode pos="(14:6-15:16)" kind="Stmts">
+<absnode pos="(14:6-15:16)" kind="IfStmt">
+<absnode pos="(14:9-14:13)" kind="BinExpr" value="GTH">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="BOOL"/>
+<absnode pos="(14:9-14:9)" kind="ValName" value="i">
+<seminfo kind="DECL" value="1950409828"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(14:13-14:13)" kind="AtomExpr(INT)" value="1">
+<seminfo kind="VALUE" value="1"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+<absnode pos="(15:7-15:16)" kind="AssignStmt">
+<absnode pos="(15:7-15:7)" kind="ValName" value="i">
+<seminfo kind="DECL" value="1950409828"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(15:12-15:16)" kind="BinExpr" value="ADD">
+<seminfo kind="VALUE" value="null"/>
+<semtype kind="INT"/>
+<absnode pos="(15:12-15:12)" kind="ValName" value="i">
+<seminfo kind="DECL" value="1950409828"/>
+<semtype kind="INT"/>
+</absnode>
+<absnode pos="(15:16-15:16)" kind="AtomExpr(INT)" value="1">
+<seminfo kind="VALUE" value="1"/>
+<semtype kind="INT"/>
+</absnode>
+</absnode>
+</absnode>
+<absnode pos="(0:0-0:0)" kind="BlockStmt">
+<absnode pos="(0:0-0:0)" kind="Stmts">
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</absnode>
+</frames>

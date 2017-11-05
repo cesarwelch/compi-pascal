@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet type='text/xsl' href='xsl/imcode.xsl'?>
+<imcode>
+<datachunk label="_i" size="4"/>
+<datachunk label="_a" size="4"/>
+<datachunk label="_b" size="40"/>
+<codechunk value="_main">
+<frmnode>
+<frm kind="level" value="0"/>
+<frm kind="label" value="_main"/>
+<frm kind="size" value="8"/>
+<frm kind="FP" value="T23"/>
+</frmnode>
+<imcnode kind="SEQ">
+<imcnode kind="MOVE">
+<imcnode kind="MEM">
+<imcnode kind="NAME" value="_i"/>
+</imcnode>
+<imcnode kind="BINOP" value="+">
+<imcnode kind="MEM">
+<imcnode kind="NAME" value="_a"/>
+</imcnode>
+<imcnode kind="CONST" value="2"/>
+</imcnode>
+</imcnode>
+<imcnode kind="MOVE">
+<imcnode kind="MEM">
+<imcnode kind="BINOP" value="+">
+<imcnode kind="BINOP" value="*">
+<imcnode kind="BINOP" value="-">
+<imcnode kind="MEM">
+<imcnode kind="NAME" value="_i"/>
+</imcnode>
+<imcnode kind="CONST" value="1"/>
+</imcnode>
+<imcnode kind="CONST" value="4"/>
+</imcnode>
+<imcnode kind="NAME" value="_b"/>
+</imcnode>
+</imcnode>
+<imcnode kind="CONST" value="3"/>
+</imcnode>
+<imcnode kind="MOVE">
+<imcnode kind="MEM">
+<imcnode kind="NAME" value="_a"/>
+</imcnode>
+<imcnode kind="CONST" value="97"/>
+</imcnode>
+<imcnode kind="SEQ">
+<imcnode kind="LABEL" value="L2"/>
+<imcnode kind="CJUMP" value="L0,L1">
+<imcnode kind="BINOP" value="&#62;">
+<imcnode kind="MEM">
+<imcnode kind="NAME" value="_i"/>
+</imcnode>
+<imcnode kind="CONST" value="3"/>
+</imcnode>
+</imcnode>
+<imcnode kind="LABEL" value="L0"/>
+<imcnode kind="SEQ">
+<imcnode kind="SEQ">
+<imcnode kind="CJUMP" value="L3,L4">
+<imcnode kind="BINOP" value="&#62;">
+<imcnode kind="MEM">
+<imcnode kind="NAME" value="_i"/>
+</imcnode>
+<imcnode kind="CONST" value="1"/>
+</imcnode>
+</imcnode>
+<imcnode kind="LABEL" value="L3"/>
+<imcnode kind="MOVE">
+<imcnode kind="MEM">
+<imcnode kind="NAME" value="_i"/>
+</imcnode>
+<imcnode kind="BINOP" value="+">
+<imcnode kind="MEM">
+<imcnode kind="NAME" value="_i"/>
+</imcnode>
+<imcnode kind="CONST" value="1"/>
+</imcnode>
+</imcnode>
+<imcnode kind="JUMP" value="L5"/>
+<imcnode kind="LABEL" value="L4"/>
+<imcnode kind="SEQ">
+</imcnode>
+<imcnode kind="LABEL" value="L5"/>
+</imcnode>
+</imcnode>
+<imcnode kind="JUMP" value="L2"/>
+<imcnode kind="LABEL" value="L1"/>
+</imcnode>
+</imcnode>
+</codechunk>
+</imcode>
