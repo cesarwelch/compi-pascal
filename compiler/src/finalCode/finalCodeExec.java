@@ -18,8 +18,11 @@ import finalCode.ImcCodeBlock;
 import abstree.AbsProgram;
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jdom.Element;
 import org.jdom.Document;
+import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 
@@ -35,7 +38,15 @@ public class finalCodeExec {
 		/* se abre el archivo de entrada */
 		SAXBuilder builder = new SAXBuilder();
 		String xml_path = "imcode.xml";
-		Document xml_doc = builder.build(xml_path); //builder.build construye un arbol
+		Document xml_doc = null;
+            try {
+                xml_doc = builder.build(xml_path); //builder.build construye un arbol
+            } catch (JDOMException ex) {
+                Logger.getLogger(finalCodeExec.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(finalCodeExec.class.getName()).log(Level.SEVERE, null, ex);
+            }
 		Element root = xml_doc.getRootElement();
+                System.out.println(root.getAttributes());
 	}
 }
