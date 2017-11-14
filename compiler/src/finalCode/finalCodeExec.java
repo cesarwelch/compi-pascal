@@ -35,44 +35,46 @@ public class finalCodeExec {
      * se empieza la traduccion hasta la fase de analisis semantico
      */
     public static void exec() {
-        /* se abre el archivo de entrada */
-        SAXBuilder builder = new SAXBuilder();
-        String xml_path = "imcode.xml";
-        Document xml_doc = null;
-        try {
-            xml_doc = builder.build(xml_path); //builder.build construye un arbol
-        } catch (JDOMException ex) {
-            Logger.getLogger(finalCodeExec.class.getName()).log(Level.SEVERE, null, ex);
+
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream("finalCode.asm"), "utf-8"))) {
+            write(writer, ".data");
+            newLine(writer);
+            SAXBuilder builder = new SAXBuilder();
+            String xml_path = "imcode.xml";
+            Document xml_doc = null;
+            try {
+                xml_doc = builder.build(xml_path); //builder.build construye un arbol
+            } catch (JDOMException ex) {
+                Logger.getLogger(finalCodeExec.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(finalCodeExec.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Element root = xml_doc.getRootElement();
+            List list = root.getChildren("datachunk");
+
+            for (int i = 0; i < list.size(); i++) {
+                Element node = (Element) list.get(i);
+                String suffix = "";
+                switch (node.getAttribute("size").getValue()) {
+                    case "4":
+                        suffix = ".word 0";
+                        break;
+                    default:
+                        suffix = ".space 20";
+                        break;
+                }
+                write(writer, node.getAttribute("label").getValue() + " : " + suffix);
+                newLine(writer);
+            }
         } catch (IOException ex) {
             Logger.getLogger(finalCodeExec.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Element root = xml_doc.getRootElement();
-        List list = root.getChildren("datachunk");
 
-        for (int i = 0; i < list.size(); i++) {
-            Element node = (Element) list.get(i);
-            String suffix = "";
-            switch (node.getAttribute("size").getValue()) {
-                case "4":
-                    suffix = ".word 0";
-                break;
-                default: 
-                    suffix = ".space 20";
-                break;
-            }
-            
-             System.out.println(node.getAttribute("label").getValue() + " : " + suffix);
+    }
 
-        }
-
-//        try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-//                new FileOutputStream("finalCode.asm"), "utf-8"))) {
-//            writer.write(".data");
-//            newLine(writer);
-//            writer.write("test");
-//        } catch (IOException ex) {
-//            Logger.getLogger(finalCodeExec.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+    public static void write(Writer writer, String string) throws IOException {
+        writer.write(string);
     }
 
     public static void newLine(Writer writer) throws IOException {
