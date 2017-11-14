@@ -38,27 +38,34 @@
 <terminal token="ASSIGN" line="10" column="9"/>
 <terminal token="declarations_subprg" lexeme="3" line="10" column="11"/>
 <terminal token="expr_value" line="10" column="12"/>
-<terminal token="declarations_var" lexeme="a" line="11" column="5"/>
-<terminal token="ASSIGN" line="11" column="7"/>
-<terminal token="declarations" lexeme="&#39;a&#39;" line="11" column="10"/>
-<terminal token="expr_value" line="11" column="13"/>
-<terminal token="WHILE" line="12" column="5"/>
-<terminal token="declarations_var" lexeme="i" line="12" column="11"/>
-<terminal token="GTH" line="12" column="13"/>
-<terminal token="declarations_subprg" lexeme="3" line="12" column="15"/>
-<terminal token="DO" line="12" column="17"/>
-<terminal token="BEGIN" line="13" column="5"/>
-<terminal token="IF" line="14" column="6"/>
-<terminal token="declarations_var" lexeme="i" line="14" column="9"/>
-<terminal token="GTH" line="14" column="11"/>
-<terminal token="declarations_subprg" lexeme="1" line="14" column="13"/>
-<terminal token="THEN" line="14" column="15"/>
-<terminal token="declarations_var" lexeme="i" line="15" column="7"/>
-<terminal token="ASSIGN" line="15" column="9"/>
-<terminal token="declarations_var" lexeme="i" line="15" column="12"/>
-<terminal token="expr_type" line="15" column="14"/>
-<terminal token="declarations_subprg" lexeme="1" line="15" column="16"/>
-<terminal token="END" line="16" column="5"/>
-<terminal token="END" line="17" column="1"/>
-<terminal token="list_param" line="17" column="4"/>
+<terminal token="declarations_var" lexeme="b" line="11" column="5"/>
+<terminal token="decl_func" line="11" column="6"/>
+<terminal token="declarations_var" lexeme="i" line="11" column="7"/>
+<terminal token="composed_stmt" line="11" column="8"/>
+<terminal token="ASSIGN" line="11" column="9"/>
+<terminal token="declarations_subprg" lexeme="4" line="11" column="11"/>
+<terminal token="expr_value" line="11" column="12"/>
+<terminal token="declarations_var" lexeme="a" line="12" column="5"/>
+<terminal token="ASSIGN" line="12" column="7"/>
+<terminal token="declarations" lexeme="&#39;a&#39;" line="12" column="10"/>
+<terminal token="expr_value" line="12" column="13"/>
+<terminal token="WHILE" line="13" column="5"/>
+<terminal token="declarations_var" lexeme="i" line="13" column="11"/>
+<terminal token="GTH" line="13" column="13"/>
+<terminal token="declarations_subprg" lexeme="3" line="13" column="15"/>
+<terminal token="DO" line="13" column="17"/>
+<terminal token="BEGIN" line="14" column="5"/>
+<terminal token="IF" line="15" column="6"/>
+<terminal token="declarations_var" lexeme="i" line="15" column="9"/>
+<terminal token="GTH" line="15" column="11"/>
+<terminal token="declarations_subprg" lexeme="1" line="15" column="13"/>
+<terminal token="THEN" line="15" column="15"/>
+<terminal token="declarations_var" lexeme="i" line="16" column="7"/>
+<terminal token="ASSIGN" line="16" column="9"/>
+<terminal token="declarations_var" lexeme="i" line="16" column="12"/>
+<terminal token="expr_type" line="16" column="14"/>
+<terminal token="declarations_subprg" lexeme="2" line="16" column="16"/>
+<terminal token="END" line="17" column="5"/>
+<terminal token="END" line="18" column="1"/>
+<terminal token="list_param" line="18" column="4"/>
 </lexanal>

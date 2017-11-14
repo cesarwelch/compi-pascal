@@ -42,6 +42,23 @@
 </imcnode>
 <imcnode kind="MOVE">
 <imcnode kind="MEM">
+<imcnode kind="BINOP" value="+">
+<imcnode kind="BINOP" value="*">
+<imcnode kind="BINOP" value="-">
+<imcnode kind="MEM">
+<imcnode kind="NAME" value="_i"/>
+</imcnode>
+<imcnode kind="CONST" value="1"/>
+</imcnode>
+<imcnode kind="CONST" value="4"/>
+</imcnode>
+<imcnode kind="NAME" value="_b"/>
+</imcnode>
+</imcnode>
+<imcnode kind="CONST" value="4"/>
+</imcnode>
+<imcnode kind="MOVE">
+<imcnode kind="MEM">
 <imcnode kind="NAME" value="_a"/>
 </imcnode>
 <imcnode kind="CONST" value="97"/>
@@ -76,7 +93,7 @@
 <imcnode kind="MEM">
 <imcnode kind="NAME" value="_i"/>
 </imcnode>
-<imcnode kind="CONST" value="1"/>
+<imcnode kind="CONST" value="2"/>
 </imcnode>
 </imcnode>
 <imcnode kind="JUMP" value="L5"/>
